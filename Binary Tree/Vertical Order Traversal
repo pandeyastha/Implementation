@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if(root==NULL) return {};
+        vector<vector<int>>result;
+        queue<pair<TreeNode*,pair<int,int>>>q;
+        map<int, map<int,vector<int>>>mp;
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            TreeNode* tempNode=q.front().first;
+            int vertical=q.front().second.first;
+            int level=q.front().second.second;
+            q.pop();
+            mp[vertical][level].push_back(tempNode->val);
+            if(tempNode->left)q.push({tempNode->left,{vertical-1,level+1}});
+            if(tempNode->right)q.push({tempNode->right,{vertical+1,level+1}});
+        }
+        for(auto x:mp){
+            vector<int>tempo;
+            for(auto y:x.second)
+                tempo.insert(tempo.end(),y.second.begin(),y.second.end());
+            result.push_back(tempo);
+        }
+        return result;
+    }
+};
