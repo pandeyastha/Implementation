@@ -1,0 +1,51 @@
+class Solution {
+public:
+    ListNode* reverse(ListNode* head){
+        if(head==NULL||head->next==NULL) return head;
+        ListNode* prev=NULL;
+        ListNode* curr=head;
+        ListNode* nex=NULL;
+        while(curr!=NULL){
+            nex=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=nex;
+        }
+        return prev;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack<int>st1;
+        stack<int>st2;
+        ListNode* dumm1=l1;
+        while(dumm1!=NULL){
+            st1.push(dumm1->val);
+            dumm1=dumm1->next;
+        }
+         dumm1=l2;
+        while(dumm1!=NULL){
+            st2.push(dumm1->val);
+            dumm1=dumm1->next;
+        }
+        int carry=0;
+        ListNode* newHead=new ListNode();
+        ListNode* result=newHead;
+        while(!st1.empty()||!st2.empty()||carry){
+            int value=0;
+            if(!st1.empty()){
+                value+=st1.top();
+                st1.pop();
+            }
+            if(!st2.empty()){
+                value+=st2.top();
+                st2.pop();
+            }
+            value+=carry;
+            carry=value/10;
+            ListNode* temp=new ListNode(value%10);
+            newHead->next=temp;
+            newHead=newHead->next;
+        }
+        ListNode* answer=reverse(result->next);
+        return answer;
+    }
+};
